@@ -21,13 +21,13 @@ pipeline {
     }
 
     stages {
-        stage ('checkout scm') {
+        stage ('检查 scm') {
             steps {
                 checkout(scm)
             }
         }
 
-        stage ('unit test') {
+        stage ('单元测试') {
             steps {
                 container ('maven') {
                     sh 'mvn clean  -gs `pwd`/configuration/settings.xml test'
@@ -35,7 +35,7 @@ pipeline {
             }
         }
 
-        stage ('build & push') {
+        stage ('构建并发布') {
             steps {
                 container ('maven') {
                     sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/configuration/settings.xml clean package'
@@ -48,7 +48,7 @@ pipeline {
             }
         }
 
-        stage('push latest'){
+        stage('推送 latest'){
            when{
              branch 'master'
            }
@@ -60,7 +60,7 @@ pipeline {
            }
         }
 
-        stage('deploy to dev') {
+        stage('发布 to dev') {
           when{
             branch 'master'
           }
